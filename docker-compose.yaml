@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  db:
+    image: mariadb:10.11
+    container_name: watchstack_db
+    restart: always
+    ports:
+      - "3307:3306"
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MARIADB_DATABASE: watchstack
+      MARIADB_USER: ${DB_USER}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./backend/db-init/create-update-schema.sql:/etc/mysql/create-update-schema.sql
+    command: [
+      "mariadbd",
+      "--init-file=/etc/mysql/create-update-schema.sql"
+    ]
+
+  backend:
+    build: ./backend
+    container_name: watchstack_be
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: db
+      TMDB_READ_ACCESS_TOKEN: ${TMDB_READ_ACCESS_TOKEN}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: watchstack
+    depends_on:
+      - db
+
+volumes:
+  db_data:
+    driver: local
+    external: false
