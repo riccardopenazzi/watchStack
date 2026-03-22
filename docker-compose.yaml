@@ -35,6 +35,19 @@ services:
       DB_NAME: watchstack
     depends_on:
       - db
+    
+  frontend:
+    build: ./frontend
+    container_name: watchstack_fe
+    ports:
+      - "8080:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_URL=http://localhost:3000/api
+    depends_on:
+    - backend
 
 volumes:
   db_data:
