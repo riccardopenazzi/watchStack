@@ -10,5 +10,6 @@ router.get('/movies', watchStackController.getMoviesList);
 
 router.get('/users', usersController.getUsersList);
 router.post('/create-user', usersController.createUser);
+router.post('/login', usersController.executeLogin);
 
 export default router;

@@ -75,7 +75,24 @@ async function getUsersList(vars) {
             ;
 }
 
+async function executeLogin(vars) {
+    vars ||= {};
+
+    const { username, password } = vars;
+
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    console.log('executeLogin - Hashed password for comparison:', hashedPassword);
+
+    const sqlQuery = 'SELECT * FROM app_user WHERE username = ? AND password = ?';
+    const [usersList] = await db.execute(sqlQuery, [username, hashedPassword]);
+    return (usersList || [])
+            .map(user => new UserDTO(user))
+            ;
+}
+
 export default {
     createUser,
-    getUsersList
+    getUsersList,
+    executeLogin,
 };

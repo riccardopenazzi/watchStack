@@ -82,7 +82,42 @@ async function createUser(req, res) {
     }
 }
 
+async function executeLogin(req, res) {
+    const { username, password } = req.body;
+
+    if (!username || !password) {
+        console.error('executeLogin error: Missing username or password', req.body);
+        return res.status(400).json({
+            success: false,
+            message: 'Missing required fields: username and password are required.',
+        });
+    }
+
+    try {
+        const usersList = await usersService.executeLogin({ username, password });
+
+        if (!usersList || !usersList.length) {
+            return res.status(401).json({
+                success: false,
+                message: 'Invalid username or password.',
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: usersList[0],
+        });
+    } catch (error) {
+        console.error('executeLogin error:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Internal server error while executing login.',
+        });
+    }
+}
+
 export default {
     createUser,
-    getUsersList
+    getUsersList,
+    executeLogin
 };
