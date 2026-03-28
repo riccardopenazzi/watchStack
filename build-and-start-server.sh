@@ -1,0 +1,10 @@
+#!/bin/bash
+
+echo "Spegnimento container esistenti..."
+docker compose down
+
+echo "Build e avvio in corso..."
+docker compose up -d --build
+
+echo "Aggancio ai log..."
+docker compose logs -f

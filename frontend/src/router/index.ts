@@ -7,10 +7,15 @@ const routes = [
     },
     {
         path: "/login",
-        name: "Login",
+        name: "login",
         component: () => import("@/views/login-page.vue"),
         meta: { hideBottomBar: true },
-    }
+    },
+    {
+        path: "/home",
+        name: "home",
+        component: () => import("@/views/home-page.vue"),
+    },
 ];
 
 const router = createRouter({

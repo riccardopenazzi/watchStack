@@ -4,10 +4,15 @@
             <v-app-bar-title class="font-weight-bold">WatchStack</v-app-bar-title>
         </v-app-bar>
         <v-main>
-            <router-view />
+			<v-skeleton-loader
+					v-if="!reqDataLoaded"
+					type="card"
+					></v-skeleton-loader>
+            <router-view v-else />
         </v-main>
         <v-bottom-navigation
                 v-show="bottomBarVisible"
+                v-model="activePage"
                 grow
                 color="primary"
                 >
@@ -28,14 +33,22 @@
 </template>
 
 <script>
+import { mapStores, mapState } from 'pinia';
+import { useDataHolderStore } from '@/stores/_data-holder';
+
 export default {
     name: 'WatchStack',
     data() {
         return {
-
+            activePage: 'home',
         }
     },
     computed: {
+        ...mapStores(useDataHolderStore),
+        ...mapState(useDataHolderStore, [
+            'reqDataLoaded',
+        ]),
+
         bottomBarVisible() {
             return true
                     && !this.$route.meta.hideBottomBar
@@ -45,7 +58,16 @@ export default {
     methods: {
         goTo(routeName) {
             this.$router.push({ name: routeName });
-        }
+        },
+    },
+    watch: {
+        activePage(val) {
+            this.goTo(val);
+        },
+    },
+    mounted() {
+        //Probabilmente subottimo metterlo qui (i dati si caricano prima del login) ma per ora va bene così
+        this.dataHolderStore.loadEssentialsData();
     },
 }
 </script>

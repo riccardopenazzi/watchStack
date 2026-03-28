@@ -29,6 +29,9 @@
 <script>
 import api from '@/services/api-service';
 
+import { mapStores } from 'pinia';
+import { useUserDataStore } from '@/stores/user-data';
+
 export default {
     data() {
         return {
@@ -39,6 +42,9 @@ export default {
                 },
             },
         }
+    },
+    computed: {
+        ...mapStores(useUserDataStore),
     },
     methods: {
         async executeLogin(vars) {
@@ -51,7 +57,15 @@ export default {
 
             vars.url = '/login';
             vars.body = { ...this.form.data };
-            return await api.post(vars);
+            const result = await api.post(vars);
+
+            if (!result.data || !result.data?.userId) {
+                console.error('Login failed ', result);
+                return;
+            }
+
+            this.userDataStore.initUserInfo({ data: result.data });
+            this.$router.push({ name: 'home' });
         },
     }
 }

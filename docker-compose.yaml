@@ -33,6 +33,9 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
       DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       DB_NAME: watchstack
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
     depends_on:
       - db
     

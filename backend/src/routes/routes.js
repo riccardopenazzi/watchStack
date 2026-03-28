@@ -7,6 +7,7 @@ import usersController from "../controllers/usersController.js";
 const router = express.Router();
 
 router.get('/movies', watchStackController.getMoviesList);
+router.get('/genres', watchStackController.getGenresList);
 
 router.get('/users', usersController.getUsersList);
 router.post('/create-user', usersController.createUser);

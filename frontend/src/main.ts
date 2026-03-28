@@ -1,3 +1,4 @@
+import '@/utils/utils'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
