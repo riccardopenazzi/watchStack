@@ -9,7 +9,7 @@ const routes = [
         path: "/login",
         name: "login",
         component: () => import("@/views/login-page.vue"),
-        meta: { hideBottomBar: true },
+        meta: { hideBottomBar: true, hideTopBar: true },
     },
     {
         path: "/home",

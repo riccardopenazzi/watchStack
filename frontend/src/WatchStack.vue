@@ -1,6 +1,10 @@
 <template>
     <v-app>
-        <v-app-bar flat border>
+        <v-app-bar
+                v-if="topBarVisible"
+                flat 
+                border
+                >
             <v-app-bar-title class="font-weight-bold">WatchStack</v-app-bar-title>
         </v-app-bar>
         <v-main>
@@ -54,6 +58,12 @@ export default {
                     && !this.$route.meta.hideBottomBar
                     ;
         },
+
+		topBarVisible() {
+			return true
+					&& !this.$route.meta.hideTopBar
+					;
+		},
     },
     methods: {
         goTo(routeName) {
@@ -71,3 +81,17 @@ export default {
     },
 }
 </script>
+
+<style lang="scss">
+.v-btn--variant-elevated.v-btn--primary {
+  box-shadow: 0 0 15px rgba(124, 131, 253, 0.4) !important;
+}
+.v-bottom-navigation {
+  border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(10px);
+}
+
+h1, .text-h4 {
+  letter-spacing: -0.5px !important;
+}
+</style>
